@@ -659,7 +659,7 @@ exports.CadSetePrest = (req,res,next) => {
     mysql.getConnection((error, conn) => {
         if(error){return res.json({ error: 'error sql'})} 
 
-        if(req.body.ButtonValor === "Sim"){req.body.EmailFunc = req.prestadores.EmailPrest}
+        if(req.body.ButtonValor === "true"){req.body.EmailFunc = req.prestadores.EmailPrest}
 
         conn.query('select * from funcionario where EmailFunc = ? or CpfFunc = ?', [req.body.EmailFunc,req.body.CpfFunc],
         (error, result, field)=> {
