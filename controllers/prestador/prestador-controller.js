@@ -50,6 +50,7 @@ exports.BuscaPrest2 = (req, res, next) => {
                         ClinicaPrest: prest.ClinicaPrest,
                         OngPrest: prest.OngPrest,
                         PasseadorPrest: prest.PasseadorPrest,
+                        AdestradorPrest: prest.AdestradorPrest,
                         HotelPrest: prest.HotelPrest
                     }
                 })
@@ -453,7 +454,7 @@ exports.CadTercPrest = (req, res, next) => {
 
             let idHorarios = resultHorario.insertId; 
             mysql.getConnection((error, conn) => {
-                conn.query('update prestadores set NomeFantsPrest=?,PetShopPrest=?,ClinicaPrest=?,PasseadorPrest=?,HotelPrest=?,CepPrest=?,descricaoPrest=?, NumPrest=?,IdHorarioPrest=?,longitude=?,latitude=? where EmailPrest= ?', [req.body.NomeFantsPrest,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.PasseadorPrest,req.body.HotelPrest,req.body.CepPrest,req.body.descricaoPrest,req.body.NumPrest,idHorarios,req.body.longitude,req.body.latitude,req.prestadores.EmailPrest],
+                conn.query('update prestadores set NomeFantsPrest=?,PetShopPrest=?,ClinicaPrest=?,PasseadorPrest=?,AdestradorPrest=?,HotelPrest=?,CepPrest=?,descricaoPrest=?, NumPrest=?,IdHorarioPrest=?,longitude=?,latitude=? where EmailPrest= ?', [req.body.NomeFantsPrest,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.PasseadorPrest,req.body.AdestradorPrest,req.body.HotelPrest,req.body.CepPrest,req.body.descricaoPrest,req.body.NumPrest,idHorarios,req.body.longitude,req.body.latitude,req.prestadores.EmailPrest],
                 (error, resulta, field)=> {
                     conn.release(); 
                     if(error){return res.json({ error:"error sql"})}            
@@ -1366,6 +1367,7 @@ exports.BuscaPrest = (req,res,next) => {
                         ClinicaPrest: prest.ClinicaPrest ,
                         OngPrest: prest.OngPrest ,
                         PasseadorPrest: prest.PasseadorPrest ,
+                        AdestradorPrest:prest.AdestradorPrest,
                         HotelPrest: prest.HotelPrest ,
                         NomeResp: prest.NomeResp ,
                         CpfResp: prest.CpfResp ,
@@ -1496,8 +1498,8 @@ exports.EditarPrest = (req,res,next) => {
                     if(error){return res.json({ error:error})}
 
                     mysql.getConnection((error, conn) => {
-                        conn.query('update prestadores set NomeFantsPrest=?,CelularPrest=?,WhatsPrest=?,EmailPrest=?,CepPrest=?,NumPrest=?,EmergenciaPrest=?,descricaoPrest=?,longitude=?,latitude=?,PetShopPrest=?,ClinicaPrest=?,OngPrest=?,PasseadorPrest=?,HotelPrest=? and idPrest=?', 
-                        [req.body.NomeFantsPrest,req.body.CelularPrest,req.body.WhatsPrest,req.body.EmailPrest,req.body.CepPrest,req.body.NumPrest,req.body.EmergenciaPrest,req.body.descricaoPrest,req.body.longitude,req.body.latitude,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.OngPrest,req.body.PasseadorPrest,req.body.HotelPrest,req.funcionario.idPrest],
+                        conn.query('update prestadores set NomeFantsPrest=?,CelularPrest=?,WhatsPrest=?,EmailPrest=?,CepPrest=?,NumPrest=?,EmergenciaPrest=?,descricaoPrest=?,longitude=?,latitude=?,PetShopPrest=?,ClinicaPrest=?,OngPrest=?,PasseadorPrest=?,AdestradorPrest=?,HotelPrest=? and idPrest=?', 
+                        [req.body.NomeFantsPrest,req.body.CelularPrest,req.body.WhatsPrest,req.body.EmailPrest,req.body.CepPrest,req.body.NumPrest,req.body.EmergenciaPrest,req.body.descricaoPrest,req.body.longitude,req.body.latitude,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.OngPrest,req.body.PasseadorPrest,req.body.AdestradorPrest,req.body.HotelPrest,req.funcionario.idPrest],
                         (error, result, field)=> {
                             conn.release();
                             if(error){return res.json({ error:error})}
