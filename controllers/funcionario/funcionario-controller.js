@@ -1674,3 +1674,26 @@ exports.FuncClinica = (req, res, next) => {
     }) 
 }
 /*                                                    ---------------                                                              */
+
+
+/*                                                    BUSCAR FUNCIONARIO                                                                 */
+exports.VetouNao = (req, res, next) => {       //rota passando parametro
+    mysql.getConnection((error, conn) => {
+        if(error){                                  //tratamento de erro da conexao
+            return res.json({ error: "Falhou"})        
+        } 
+        conn.query('select CRMVFunc from funcionario where funcionario.idFunc = ?', [req.funcionario.idFunc],
+            (error, resultado, field)=> {
+                conn.release(); 
+                if(error){ return res.json({ error: "error sql"}) } 
+
+                if(resultado[0].CRMVFunc == null || resultado[0].CRMVFunc == ""){
+                    return res.json({ message: "Nao tem" });
+                }else{
+                    return res.json({ message: "Tem" });
+                }
+               
+            })                     
+    })
+}
+/*                                                    ---------------                                                              */

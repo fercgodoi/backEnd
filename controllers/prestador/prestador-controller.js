@@ -51,6 +51,7 @@ exports.BuscaPrest2 = (req, res, next) => {
                         OngPrest: prest.OngPrest,
                         PasseadorPrest: prest.PasseadorPrest,
                         AdestradorPrest: prest.AdestradorPrest,
+
                         HotelPrest: prest.HotelPrest
                     }
                 })
@@ -95,24 +96,7 @@ exports.CadPriPrest = (req, res, next) => {
                     }  
 
                     let passRandom = String(getRandomInt()) ;    
-                    
-                    
-                    // const token = jwt.sign({
-                    //     img1: "../../imagens/CadastroPrimeiro/img1.png",
-                    //     img2: "../../imagens/CadastroPrimeiro/img2.gif",
-                    //     img3: "../../imagens/CadastroPrimeiro/img3.png",
-                    //     img4: "../../imagens/CadastroPrimeiro/img4.png",
-                    //     codigo:passRandom
-                    // }, process.env.JWT_KEY, {
-                    //     expiresIn:"48H"
-                    // });
-
-                    // let img1 = "./imagens/CadastroPrimeiro/img1.png";
-                    // let img2= "../../imagens/CadastroPrimeiro/img2.gif";
-                    // let img3= "../../imagens/CadastroPrimeiro/img3.png";
-                    // let img4="../../imagens/CadastroPrimeiro/img4.png";
-
-                                         
+                                                             
                     transporter.sendMail({
                         from: "  AgendaAnimal <atendimento@agendaanimal.com.br>",
                         to: req.body.EmailPrest,               
@@ -316,7 +300,7 @@ exports.CadPriPrest = (req, res, next) => {
                                               <td align="center" style="padding:0;Margin:0;padding-bottom:15px"><h2 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:30px;font-style:normal;font-weight:bold;color:#4A4A4A"><font color="#ff33cc">Oba, Oba, Oba!</font></h2><h2 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-size:30px;font-style:normal;font-weight:bold;color:#0099FF">&nbsp; Seja bem-vindo🐾</h2></td> 
                                              </tr> 
                                              <tr style="border-collapse:collapse"> 
-                                              <td align="center" class="es-m-txt-c" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:24px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:36px;color:#4A4A4A">A plataforma mais Animal do Brasil!<br><br>&nbsp;<strong><span style="background-color:#FF00CC"><span style="color:#FFFFFF">&nbsp;Vamos</span>&nbsp;</span></strong>&nbsp;começar com seus&nbsp;<span style="color:#FFFFFF"><span style="background-color:#6699FF">&nbsp;</span><strong><span style="background-color:#6699FF">primeiros&nbsp;</span></strong></span><br>passos aqui&nbsp;no Agenda Animal.<br><br>Inseria o seu&nbsp;<span style="color:#FFFFFF"><span style="background-color:#6699FF"> Código&nbsp;</span></span> para prosseguir<br>no cadastro&nbsp;<span style="color:#FFFFFF"><span style="background-color:#FF00CC">${passRandom}</span></span></p></td> 
+                                              <td align="center" class="es-m-txt-c" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:24px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:36px;color:#4A4A4A">A plataforma mais Animal do Brasil!<br><br>&nbsp;<strong><span style="background-color:#FF00CC"><span style="color:#FFFFFF">&nbsp;Vamos</span>&nbsp;</span></strong>&nbsp;começar com seus&nbsp;<span style="color:#FFFFFF"><span style="background-color:#6699FF">&nbsp;</span><strong><span style="background-color:#6699FF">primeiros&nbsp;</span></strong></span><br>passos aqui&nbsp;no Agenda Animal.<br><br>Inserir o seu&nbsp;<span style="color:#FFFFFF"><span style="background-color:#6699FF"> Código&nbsp;</span></span> para prosseguir<br>no cadastro&nbsp;<span style="color:#FFFFFF"><span style="background-color:#FF00CC">${passRandom}</span></span></p></td> 
                                              </tr> 
                                            </table></td> 
                                          </tr> 
@@ -449,10 +433,11 @@ exports.CadTercPrest = (req, res, next) => {
         if(req.body.DomingFinal == ''){req.body.DomingFinal = null;}
         conn.query('insert into horarioPrest  (SegundInicio, SegundFinal, TercaInicio, TercaFinal, QuartInicio, QuartFinal, QuintInicio, QuintFinal, SextInicio, SextFinal, SabInicio, SabFinal, DomingInicio, DomingFinal) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [req.body.SegundInicio, req.body.SegundFinal, req.body.TercaInicio, req.body.TercaFinal, req.body.QuartInicio,req.body.QuartFinal, req.body.QuintInicio, req.body.QuintFinal, req.body.SextInicio, req.body.SextFinal, req.body.SabInicio, req.body.SabFinal, req.body.DomingInicio, req.body.DomingFinal],
             (error, resultHorario, field)=> {
+              let idHorarios = resultHorario.insertId; 
             conn.release(); 
             if(error){ return res.json({ error: "error sql"}) }  
 
-            let idHorarios = resultHorario.insertId; 
+            
             mysql.getConnection((error, conn) => {
                 conn.query('update prestadores set NomeFantsPrest=?,PetShopPrest=?,ClinicaPrest=?,PasseadorPrest=?,AdestradorPrest=?,HotelPrest=?,CepPrest=?,descricaoPrest=?, NumPrest=?,IdHorarioPrest=?,longitude=?,latitude=? where EmailPrest= ?', [req.body.NomeFantsPrest,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.PasseadorPrest,req.body.AdestradorPrest,req.body.HotelPrest,req.body.CepPrest,req.body.descricaoPrest,req.body.NumPrest,idHorarios,req.body.longitude,req.body.latitude,req.prestadores.EmailPrest],
                 (error, resulta, field)=> {
@@ -478,12 +463,11 @@ exports.CadQuartPrest = (req, res, next) => {
             if(results.length > 0){
                 return res.json({ message: "ja existe"})
             }
-
             mysql.getConnection((error, conn) => {
-                conn.query('insert into servico (tipoServ,valorServ,idPrest) values (?,?,?)',[req.body.tipoServ,req.body.valorServ,req.prestadores.id],
+                conn.query('insert into servico (tipoServ,codigoServ,valorServ,idPrest) values (?,?,?,?)',[req.body.tipoServ,req.body.Codigo,req.body.valorServ,req.prestadores.id],
                 (error, resulta, field)=> { 
-                    conn.release();
-                    let id = resulta.insertId; 
+                    conn.release();          
+                    let id = resulta.insertId;          
                     if(error){return res.json({ error:'error sql'})}  
                     return res.json({ message:'Salvo', id:id});
                     // var id = resulta.insertId;  
@@ -661,6 +645,7 @@ exports.CadSetePrest = (req,res,next) => {
         if(error){return res.json({ error: 'error sql'})} 
 
         if(req.body.ButtonValor === "true"){req.body.EmailFunc = req.prestadores.EmailPrest}
+
 
         conn.query('select * from funcionario where EmailFunc = ? or CpfFunc = ?', [req.body.EmailFunc,req.body.CpfFunc],
         (error, result, field)=> {
@@ -1418,6 +1403,7 @@ exports.BuscaServicosPrest = (req,res,next) => {
                         idServ: serv.idServ ,
                         tipoServ: serv.tipoServ ,
                         valorServ: serv.valorServ ,
+                        codigoServ: serv.codigoServ ,
                     };
                 })
             };
@@ -1434,7 +1420,7 @@ exports.EditarServicosPrest = (req,res,next) => {
     mysql.getConnection((error, conn) => {
         if(error){return res.json({ error: 'error sql'})} 
 
-        conn.query('update servico set tipoServ=?, valorServ=? where idServ=?;', [req.body.tipoServ,req.body.valorServ,req.body.idServ],
+        conn.query('update servico set tipoServ=?, codigoServ=?, valorServ=? where idServ=?;', [req.body.tipoServ,req.body.Codigo,req.body.valorServ,req.body.idServ],
         (error, result, field)=> {
             conn.release();
             if(error){return res.json({ error:'error sql'})}
@@ -1498,8 +1484,10 @@ exports.EditarPrest = (req,res,next) => {
                     if(error){return res.json({ error:error})}
 
                     mysql.getConnection((error, conn) => {
+
                         conn.query('update prestadores set NomeFantsPrest=?,CelularPrest=?,WhatsPrest=?,EmailPrest=?,CepPrest=?,NumPrest=?,EmergenciaPrest=?,descricaoPrest=?,longitude=?,latitude=?,PetShopPrest=?,ClinicaPrest=?,OngPrest=?,PasseadorPrest=?,AdestradorPrest=?,HotelPrest=? and idPrest=?', 
                         [req.body.NomeFantsPrest,req.body.CelularPrest,req.body.WhatsPrest,req.body.EmailPrest,req.body.CepPrest,req.body.NumPrest,req.body.EmergenciaPrest,req.body.descricaoPrest,req.body.longitude,req.body.latitude,req.body.PetShopPrest,req.body.ClinicaPrest,req.body.OngPrest,req.body.PasseadorPrest,req.body.AdestradorPrest,req.body.HotelPrest,req.funcionario.idPrest],
+
                         (error, result, field)=> {
                             conn.release();
                             if(error){return res.json({ error:error})}
@@ -1532,3 +1520,33 @@ exports.EditarPrest = (req,res,next) => {
     })
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////// BUSCAR SERVIÇOS ESTAPA 4//////////////////////////////////////////////
+exports.BuscaServicosPresQuatro = (req,res,next) => {
+  mysql.getConnection((error, conn) => {
+      if(error){return res.json({ error: 'error sql'})} 
+
+      conn.query('select * from servico where idPrest=?', [req.prestadores.id],
+      (error, result, field)=> {
+          conn.release();
+          if(error){return res.json({ error:'error sql'})}
+
+          const response = {
+              Servicos: result.map(serv => {
+                  return  {
+                      idServ: serv.idServ ,
+                      tipoServ: serv.tipoServ ,
+                      valorServ: serv.valorServ ,
+                      codigoServ: serv.codigoServ ,
+                  };
+              })
+          };
+
+          return res.json({ response });
+      })
+  })
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////

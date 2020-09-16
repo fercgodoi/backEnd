@@ -9,4 +9,6 @@ router.post('/BuscarMed',login.obrigatorio, medicacaoController.buscarMed);
 router.post('/FiltroMed',login.obrigatorio, medicacaoController.FiltroMed);
 router.post('/BuscarInfo',login.obrigatorio, medicacaoController.BuscarInfo);
 
+router.post('/CadastroMedInserir',login.obrigatorio, medicacaoController.CadastroMedInserir);
+
 module.exports = router; 

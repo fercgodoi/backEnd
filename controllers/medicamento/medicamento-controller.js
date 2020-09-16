@@ -39,6 +39,57 @@ exports.CadastroMed = (req, res, next) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+///////////////////////////////////////////////////////////////  CADASTRO MEDICAMENTOS /////////////////////////////////////////////////////////////////////////
+exports.CadastroMedInserir = (req, res, next) => {
+    mysql.getConnection((error, conn) =>{
+        if(error){return res.json({ error: 'erro sql'})} 
+
+        conn.query('select * from prestadores where idPrest=?', [req.funcionario.idPrest],
+        (error, result, field)=> {
+            conn.release();
+            if(error){return res.json({ error: 'erro sql' })} 
+            if(result.length == 0){
+                return res.json({ message: "Vet nao encontrado"})
+            }
+
+            mysql.getConnection((error, conn) => {
+                conn.query('select * from pet where rgPet = ?', [req.body.rgPet],
+                (error, resultado, field)=> {
+                    conn.release();
+                    if(error){return res.json({ error:'erro sql'})}
+                    if(resultado.length == 0){
+                        return res.json({ message: "Pet nao encontrado"})
+                    }
+                    mysql.getConnection((error, conn) => {
+                        conn.query('insert into medicamento(idPet,idPrest,statusMed,doseMed,rotinaMed,dataIniMed,dataFinMed,nomeMed,nomeEstbMed,emailEstbMed,loteMed,observacaoMed,confirmMed) values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                        [resultado[0].idPet,req.funcionario.idPrest, req.body.statusMed, req.body.doseMed, req.body.rotinaMed, req.body.dataIniMed,req.body.dataFinMed, req.body.nomeMed,result[0].NomeFantsPrest, result[0].EmailPrest,  req.body.loteMed, req.body.observacaoMed,"Confirmado"],
+                            (error, resultados, field)=> {
+                            conn.release();
+                            if(error){return res.json({ error: 'erro sql'})} 
+                            // return res.json({message : "Cadastrado", id :resultados.insertId});
+
+                            var id = resultados.insertId;
+
+                            mysql.getConnection((error, conn) => {
+                                conn.query('insert into consulta(idPrest,idFunc,idPet,idVacina,idMed,idExames,dataConst) values (?,?,?,?,?,?,?)',
+                                [req.funcionario.idPrest,req.funcionario.idFunc,resultado[0].idPet,"false",id,"false",req.body.dataIniMed],
+                                    (error, resultados, field)=> {
+                                        conn.release();
+                                    if(error){ return res.json({ error:"error sql"})};
+                                    return res.json({message : "Cadastrado", id :id});  
+                                })
+                            })
+                        })
+                    })
+
+                }) 
+            })  
+        }) 
+    })
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 ///////////////////////////////////////////////////////////////  BUSCAR MEDICAMENTO  //////////////////////////////////////////////////////////////////////////
 exports.buscarMed = (req, res, next) => {
     mysql.getConnection((error, conn) => {

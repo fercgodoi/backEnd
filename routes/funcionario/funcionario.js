@@ -18,4 +18,7 @@ router.post('/EsqueciSenhaFunc',FuncionarioController.EsqueciSenhaFunc);
 
 router.post('/FuncClinica', login.obrigatorio,FuncionarioController.FuncClinica);
 
+router.post('/VetouNao', login.obrigatorio,FuncionarioController.VetouNao);
+
+
 module.exports = router;

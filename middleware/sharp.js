@@ -2,11 +2,14 @@ const fs = require('fs');
 sharp = require('sharp');
 
 exports.compressImage = (file) => {
+
     const newPath = file.path.split('.')[0] + '.jpg';
+
 
     return sharp(file.path)
         .resize(531, 479)
         .toFormat('jpg')
+
         .jpeg({
             quality: 80
         })
