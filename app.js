@@ -15,6 +15,7 @@ const rotaMedicacao = require('./routes/medicamento/medicamento')
 const rotaProntuario = require('./routes/prontuario/prontuario')
 const rotaExame = require('./routes/exame/exame')
 const rotaTeste = require('./routes/teste/teste')
+const rotaPet = require('./routes/pet/pet')
 
 app.use(cors());                                        //libera o acesso para determinados dominios
 app.use(morgan('dev'));                                 //da uma informação no console sobre a requisição(callback)//s
@@ -46,7 +47,7 @@ app.use('/Medicamento', rotaMedicacao);
 app.use('/Prontuario', rotaProntuario); 
 app.use('/Exame', rotaExame); 
 app.use('/Teste', rotaTeste); 
-
+app.use('/Pet', rotaPet); 
 
  //quando nao encontra rota cai aqui//
 app.use((req, res, next)=> {                        //tratamento de erro//
